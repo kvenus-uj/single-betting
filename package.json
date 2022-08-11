@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@metaplex/js": "^3.0.0",
+    "@project-serum/anchor": "^0.22.1",
+    "@solana/spl-token": "^0.2.0",
     "@solana/wallet-adapter-base": "^0.9.9",
     "@solana/wallet-adapter-react": "^0.15.8",
     "@solana/wallet-adapter-react-ui": "^0.9.10",

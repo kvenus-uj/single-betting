@@ -2,23 +2,31 @@ import logo from './logo.svg';
 import './App.css';
 import { Button, Col, Row, Dropdown, DropdownButton, Form } from "react-bootstrap";
 import { useRef, useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { determine, init, solBet } from './utiles'
 function App() {
   const amount = useRef();
-  const [side, setSide] = useState("FRONT");
+  const wallet = useWallet();
+  const [side, setSide] = useState(1);
+  const [title, setTitle] = useState("FRONT");
   function onChange(val){
 
     if(val==="front"){
-      setSide("FRONT");
+      setTitle("FRONT");
+      setSide(1);
     } else if(val==="back"){
-      setSide("BACK");
+      setTitle("BACK");
+      setSide(0);
     }
     
   }
   const bet = async () => {
+    await solBet(wallet, side, amount.current.value);
     console.log('bet: ', amount.current.value);
   }
   const start = async () => {
+    await determine(wallet);
     console.log('Start betting...');
   }
   return (
@@ -45,7 +53,7 @@ function App() {
           </Button>
         </Col>
         <Col>
-          <DropdownButton title={side} onSelect={(evt) => onChange(evt)}>
+          <DropdownButton title={title} onSelect={(evt) => onChange(evt)}>
             <Dropdown.Item eventKey="front">FRONT</Dropdown.Item>
             <Dropdown.Item eventKey="back">BACK</Dropdown.Item>
           </DropdownButton>
