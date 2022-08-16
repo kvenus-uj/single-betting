@@ -197,6 +197,10 @@
           {
             "name": "betSide",
             "type": "bool"
+          },
+          {
+            "name": "betTime",
+            "type": "u64"
           }
         ]
       }
@@ -245,6 +249,6 @@
     }
   ],
   "metadata": {
-    "address": "7XdyGzK3ccju9jm6fkY44GSrisWY3e8G3eVG9betU8tD"
+    "address": "8UDGwnY7BXAW91M2KCbMazXj2fxj2vG2fg2roXecEtAX"
   }
 }

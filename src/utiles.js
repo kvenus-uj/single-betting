@@ -51,7 +51,7 @@ export const init = async (wallet) => {
 	const program = new Program(idl, programID, provider);
 	const [bettingPubkey, bettingBump] =
 		await web3.PublicKey.findProgramAddress(
-		[Buffer.from(utils.bytes.utf8.encode('kings'))],
+		[Buffer.from(utils.bytes.utf8.encode('betting-info'))],
 		program.programId
 		);
     await program.rpc.initialize(
