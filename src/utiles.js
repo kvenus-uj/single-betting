@@ -47,7 +47,7 @@ export const executeAllTransactions = async (
   }
     
 export const init = async (wallet) => {
-    const provider = await getProvider(wallet);
+  const provider = await getProvider(wallet);
 	const program = new Program(idl, programID, provider);
 	const [bettingPubkey, bettingBump] =
 		await web3.PublicKey.findProgramAddress(
@@ -68,7 +68,7 @@ export const init = async (wallet) => {
 }
 
 export const solBet = async (wallet, side, amount) => {
-    const provider = await getProvider(wallet);
+  const provider = await getProvider(wallet);
 	const program = new Program(idl, programID, provider);
 	const [vault, vaultBump] =
 		await web3.PublicKey.findProgramAddress(
@@ -86,7 +86,7 @@ export const solBet = async (wallet, side, amount) => {
         vaultBump,
         userBettingBump,
         side,
-        new anchor.BN(amount).mul(new anchor.BN(1e9)),
+        new anchor.BN(amount).mul(new anchor.BN(1e6)),
         {
             accounts: {
                 userAccount: provider.wallet.publicKey,

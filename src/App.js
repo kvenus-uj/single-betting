@@ -22,7 +22,7 @@ function App() {
     
   }
   const bet = async () => {
-    await solBet(wallet, side, amount.current.value);
+    await solBet(wallet, side, amount.current.value*1000);
     console.log('bet: ', amount.current.value);
   }
   const start = async () => {
