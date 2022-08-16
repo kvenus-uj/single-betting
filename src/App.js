@@ -8,16 +8,16 @@ import { determine, solBet } from './utiles'
 function App() {
   const amount = useRef();
   const wallet = useWallet();
-  const [side, setSide] = useState(1);
+  const [side, setSide] = useState(true);
   const [title, setTitle] = useState("FRONT");
   function onChange(val){
 
     if(val==="front"){
       setTitle("FRONT");
-      setSide(1);
+      setSide(true);
     } else if(val==="back"){
       setTitle("BACK");
-      setSide(0);
+      setSide(false);
     }
     
   }
