@@ -4,7 +4,7 @@ import { Button, Col, Row, Dropdown, DropdownButton, Form } from "react-bootstra
 import { useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { determine, init, solBet } from './utiles'
+import { determine, solBet } from './utiles'
 function App() {
   const amount = useRef();
   const wallet = useWallet();
