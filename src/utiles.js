@@ -22,7 +22,6 @@ export const executeAllTransactions = async (
     transactions,
   ) => {
     if (transactions.length === 0) return []
-  
     const recentBlockhash = (await connection.getRecentBlockhash('max')).blockhash
     for (let tx of transactions) {
       tx.feePayer = wallet.publicKey
@@ -43,6 +42,7 @@ export const executeAllTransactions = async (
         }
       })
     )
+    console.log(txIds);
     return txIds
   }
     
@@ -65,6 +65,63 @@ export const init = async (wallet) => {
             }
         }
     );        
+}
+
+export const allStart = async (wallet, side, amount) => {
+  const provider = await getProvider(wallet);
+	const program = new Program(idl, programID, provider);
+	const [vault, vaultBump] =
+		await web3.PublicKey.findProgramAddress(
+		  [Buffer.from(utils.bytes.utf8.encode('betting-public-vault'))],
+		  program.programId
+		);
+    const [userBettingPubkey, userBettingBump] =
+		await web3.PublicKey.findProgramAddress(
+      [Buffer.from(utils.bytes.utf8.encode('user-info')),
+          wallet.publicKey.toBuffer()],
+	  	program.programId
+		);
+    const transaction = new Transaction();
+    transaction.add( program.instruction.solBet(
+        vaultBump,
+        userBettingBump,
+        side,
+        new anchor.BN(amount).mul(new anchor.BN(1e6)),
+        {
+            accounts: {
+                userAccount: provider.wallet.publicKey,
+                escrowAccount: vault,
+                userBettingAccount: userBettingPubkey,
+                systemProgram: SystemProgram.programId,
+                rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+            }
+        }
+    ));
+    transaction.add( program.instruction.betResult(
+      vaultBump,
+      userBettingBump,
+      {
+          accounts: {
+              userAccount: provider.wallet.publicKey,
+              escrowAccount: vault,
+              userBettingAccount: userBettingPubkey,
+              systemProgram: SystemProgram.programId,
+              rent: anchor.web3.SYSVAR_RENT_PUBKEY,
+          }
+      }
+  ));        
+  let txs = [];
+  txs.push(transaction);
+  try {
+    await executeAllTransactions(
+      provider.connection,
+      wallet,
+      txs,
+    );
+    console.log('Great.');
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export const solBet = async (wallet, side, amount) => {

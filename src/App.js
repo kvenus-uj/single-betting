@@ -4,7 +4,7 @@ import { Button, Col, Row, Dropdown, DropdownButton, Form } from "react-bootstra
 import { useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { determine, init, solBet } from './utiles'
+import { allStart, determine, init, solBet } from './utiles'
 function App() {
   const amount = useRef();
   const wallet = useWallet();
@@ -30,6 +30,10 @@ function App() {
     await determine(wallet);
     console.log('Start betting...');
   }
+  const myBet = async () => {
+    await allStart(wallet, side, amount.current.value*1000);
+    console.log('bet: ', amount.current.value,'at ', side);
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -46,13 +50,13 @@ function App() {
             placeholder="SOL for Betting"
           />
         </Col>
-        <Col>
+        {/* <Col>
           <Button
             type="submit"
             onClick={bet}
           >Bet
           </Button>
-        </Col>
+        </Col> */}
         <Col>
           <DropdownButton title={title} onSelect={(evt) => onChange(evt)}>
             <Dropdown.Item eventKey="front">FRONT</Dropdown.Item>
@@ -62,8 +66,8 @@ function App() {
         <Col>
           <Button
             type="submit"
-            onClick={start}
-          >Start!
+            onClick={myBet}
+          >Bet!
           </Button>
         </Col>
       </Row>
