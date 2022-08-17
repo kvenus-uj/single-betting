@@ -201,6 +201,10 @@
           {
             "name": "betTime",
             "type": "u64"
+          },
+          {
+            "name": "isWinner",
+            "type": "bool"
           }
         ]
       }

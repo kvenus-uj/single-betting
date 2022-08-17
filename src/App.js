@@ -4,7 +4,7 @@ import { Button, Col, Row, Dropdown, DropdownButton, Form } from "react-bootstra
 import { useRef, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { allStart, determine, init, solBet } from './utiles'
+import { allStart, determine, getBetInfo, init, solBet } from './utiles'
 function App() {
   const amount = useRef();
   const wallet = useWallet();
@@ -33,6 +33,15 @@ function App() {
   const myBet = async () => {
     await allStart(wallet, side, amount.current.value*1000);
     console.log('bet: ', amount.current.value,'at ', side);
+    const info = await getBetInfo(wallet);
+    if(info.isWinner) {
+      let amt = info.betAmount*2/1000000000;
+      alert(`You won ${amt} SOL`);
+    }else {
+      let amt = info.betAmount/1000000000;
+      alert(`You lose ${amt} SOL`);
+    }
+    console.log(info);
   }
   return (
     <div className="App">

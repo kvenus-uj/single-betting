@@ -67,6 +67,24 @@ export const init = async (wallet) => {
     );        
 }
 
+export const getBetInfo = async (wallet) => {
+  const provider = await getProvider(wallet);
+	const program = new Program(idl, programID, provider);
+  const [userBettingPubkey, userBettingBump] =
+  await web3.PublicKey.findProgramAddress(
+    [Buffer.from(utils.bytes.utf8.encode('user-bet-info')),
+        wallet.publicKey.toBuffer()],
+    program.programId
+  );
+  try {
+    let res = await program.account.userBetAccount.fetch(userBettingPubkey);
+    return res;
+  } catch (e) {
+    return [];
+  }
+
+}
+
 export const allStart = async (wallet, side, amount) => {
   const provider = await getProvider(wallet);
 	const program = new Program(idl, programID, provider);
@@ -77,7 +95,7 @@ export const allStart = async (wallet, side, amount) => {
 		);
     const [userBettingPubkey, userBettingBump] =
 		await web3.PublicKey.findProgramAddress(
-      [Buffer.from(utils.bytes.utf8.encode('user-info')),
+      [Buffer.from(utils.bytes.utf8.encode('user-bet-info')),
           wallet.publicKey.toBuffer()],
 	  	program.programId
 		);
@@ -134,7 +152,7 @@ export const solBet = async (wallet, side, amount) => {
 		);
     const [userBettingPubkey, userBettingBump] =
 		await web3.PublicKey.findProgramAddress(
-      [Buffer.from(utils.bytes.utf8.encode('user-info')),
+      [Buffer.from(utils.bytes.utf8.encode('user-bet-info')),
           wallet.publicKey.toBuffer()],
 	  	program.programId
 		);
@@ -166,7 +184,7 @@ export const determine = async (wallet) => {
 		);
     const [userBettingPubkey, userBettingBump] =
 		await web3.PublicKey.findProgramAddress(
-      [Buffer.from(utils.bytes.utf8.encode('user-info')),
+      [Buffer.from(utils.bytes.utf8.encode('user-bet-info')),
         wallet.publicKey.toBuffer()],
 		  program.programId
 		);
